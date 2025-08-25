@@ -26,6 +26,17 @@ const Styles = () => (
     .submit-btn { width: 100%; padding: 1rem; border-radius: 10px; border: none; background-color: #3b82f6; color: #fff; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; margin-top: 1rem; }
     .submit-btn:hover { background-color: #2563eb; transform: translateY(-2px); }
     .submit-btn:disabled { background-color: #555; cursor: not-allowed; }
+    .quick-login-section { margin-top: 1.5rem; }
+    .quick-login-divider { text-align: center; margin: 1.5rem 0; color: #a0aec0; font-size: 0.9rem; position: relative; }
+    .quick-login-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255, 255, 255, 0.1); }
+    .quick-login-divider span { background: rgba(23, 31, 46, 0.85); padding: 0 1rem; }
+    .quick-login-buttons { display: flex; gap: 1rem; }
+    .quick-login-btn { flex: 1; padding: 0.8rem 1rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: block; text-align: center; }
+    .quick-login-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); border-color: rgba(255, 255, 255, 0.3); }
+    .quick-login-btn.admin { border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.1); }
+    .quick-login-btn.admin:hover { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
+    .quick-login-btn.employee { border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.1); }
+    .quick-login-btn.employee:hover { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5); }
     .auth-footer { text-align: center; margin-top: 1.5rem; color: #a0aec0; }
     .auth-footer a { color: #3b82f6; text-decoration: none; font-weight: 500; }
     .auth-footer a:hover { text-decoration: underline; }
@@ -73,6 +84,14 @@ const LoginPage = () => {
     }
   };
 
+  const handleAdminLogin = () => {
+    window.location.href = 'https://complaint-indol.vercel.app/admin';
+  };
+
+  const handleEmployeeLogin = () => {
+    window.location.href = 'https://complaint-indol.vercel.app/employee';
+  };
+
   return (
     <>
       <Background />
@@ -99,6 +118,29 @@ const LoginPage = () => {
             </button>
           </form>
           {error && <p className="message error">{error}</p>}
+          
+          <div className="quick-login-section">
+            <div className="quick-login-divider">
+              <span>Or login directly as</span>
+            </div>
+            <div className="quick-login-buttons">
+              <button 
+                className="quick-login-btn admin" 
+                onClick={handleAdminLogin}
+                type="button"
+              >
+                Login as Admin
+              </button>
+              <button 
+                className="quick-login-btn employee" 
+                onClick={handleEmployeeLogin}
+                type="button"
+              >
+                Login as Employee
+              </button>
+            </div>
+          </div>
+
           <div className="auth-footer">
             <p>Don't have an account? <Link to="/register">Sign Up</Link></p>
           </div>
