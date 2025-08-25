@@ -1,20 +1,22 @@
 // src/services/userService.js
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:8080/api/users';
+// Base URL from CRA env var, fallback to localhost
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8080";
+const API_URL = `${API_BASE}/api/users`;
 
 /** Helper: get current username from storage */
 function getStoredUsername() {
   return (
-    localStorage.getItem('username') ||
-    sessionStorage.getItem('username') ||
-    ''
+    localStorage.getItem("username") ||
+    sessionStorage.getItem("username") ||
+    ""
   );
 }
 
 /** Get a user by username (tries path, then query, then list fallback) */
 async function getByUsername(usernameInput) {
-  const username = (usernameInput || '').trim() || getStoredUsername();
+  const username = (usernameInput || "").trim() || getStoredUsername();
   if (!username) {
     return { data: null };
   }
@@ -34,7 +36,8 @@ async function getByUsername(usernameInput) {
     if (Array.isArray(payload)) {
       const found = payload.find(
         (u) =>
-          (u?.username && u.username.toLowerCase() === username.toLowerCase()) ||
+          (u?.username &&
+            u.username.toLowerCase() === username.toLowerCase()) ||
           (u?.name && u.name.toLowerCase() === username.toLowerCase())
       );
       if (found) return { data: found };
@@ -51,7 +54,8 @@ async function getByUsername(usernameInput) {
     const list = Array.isArray(r3?.data) ? r3.data : [];
     const found = list.find(
       (u) =>
-        (u?.username && u.username.toLowerCase() === username.toLowerCase()) ||
+        (u?.username &&
+          u.username.toLowerCase() === username.toLowerCase()) ||
         (u?.name && u.name.toLowerCase() === username.toLowerCase())
     );
     return { data: found ?? null };
@@ -69,14 +73,13 @@ async function getMyProfile(username) {
 /**
  * Update the current user's password.
  * Typical admin endpoint pattern in your codebase:
- *   PUT /api/users/{id}  with { password: 'newPass' }
+ *   PUT /api/users/{id} with { password: 'newPass' }
  * Some places might expect { newPassword } — we send both keys to be safe.
  */
 async function updateMyPassword(userId, _oldPassword, newPassword) {
-  if (!userId) throw new Error('userId is required');
+  if (!userId) throw new Error("userId is required");
 
   const body = {
-    // send both keys; backend will ignore one if not used
     password: newPassword,
     newPassword: newPassword,
   };
@@ -87,7 +90,7 @@ async function updateMyPassword(userId, _oldPassword, newPassword) {
 /** Optional helper to set username consistently */
 function setCurrentUsername(username) {
   if (!username) return;
-  localStorage.setItem('username', username);
+  localStorage.setItem("username", username);
 }
 
 const userService = {
